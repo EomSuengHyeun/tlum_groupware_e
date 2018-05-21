@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="LimitBoardMapper">
+	<select id="selectLimitBoardList" resultType="limitBoard">
+		select *
+		from L_BOARD L, EMPLOYEE E
+		where E.EMP_ID=L.EMP_ID
+		order by LIMIT_BOARD_BNO desc
+	</select>
+
+	<select id="selectLimitBoardById" resultType="limitBoard">
+		select *
+		from L_BOARD L, EMPLOYEE E 
+		where E.EMP_ID=L.EMP_ID
+		and LIMIT_BOARD_BNO=#{limit_board_bno}
+	</select>
+		
+	<update id="updateLimitBoard">
+		update L_BOARD
+		set LIMIT_BOARD_TITLE=#{limit_board_title},
+			LIMIT_BOARD_CONTENT=#{limit_board_content}
+		where LIMIT_BOARD_BNO=#{limit_board_bno}
+	</update>
+	
+	<update id="insertLimitBoard">
+		insert into L_BOARD(limit_board_bno,LIMIT_BOARD_TITLE,LIMIT_BOARD_CONTENT,EMP_ID,GRADE_NO)
+		values (#{limit_board_bno},#{limit_board_title},#{limit_board_content},#{emp_id},#{grade_no})
+		</update>
+	
+	<update id="deleteLimitBoard">
+		delete from L_BOARD
+		where LIMIT_BOARD_BNO=#{limit_board_bno}
+	</update>
+	
+	
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">
+				and LIMIT_BOARD_TITLE like '%'||#{keyword}||'%'
+			</if>
+			<if test="searchType == 'c'.toString()">
+				and LIMIT_BOARD_CONTENT like '%'||#{keyword}||'%'
+			</if>
+			<if test="searchType == 'e'.toString()">
+				and EMP_ID like '%'||#{keyword}||'%'
+			</if>
+			<if test="searchType == 'tce'.toString()">
+				and (
+					LIMIT_BOARD_TITLE like '%'||#{keyword}||'%'
+					or
+					LIMIT_BOARD_CONTENT like '%'||#{keyword}||'%'
+					or
+					EMP_ID like '%'||#{keyword}||'%'
+				)
+				
+			</if>
+		</if>
+	</sql>
+	<select id="selectSearchLimitBoardList" resultType="limitBoard">
+	<![CDATA[
+		select * 
+		from L_BOARD l,EMPLOYEE e
+		where l.EMP_ID = e.EMP_ID
+	]]>
+		<include refid="search"></include>
+		order by LIMIT_BOARD_BNO desc
+	</select>
+	<select id="selectSearchLimitBoardCount" resultType="int">
+	<![CDATA[
+		select count(*) 
+		from L_BOARD l,EMPLOYEE e
+		where l.EMP_ID = e.EMP_ID
+	]]>
+		<include refid="search"></include>
+		order by LIMIT_BOARD_BNO desc
+	</select>
+</mapper>

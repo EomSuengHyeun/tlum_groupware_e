@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MsgReceiveMapper">
+	<select id="selectSearchMsgReceiveList" resultType="msgReceive" parameterType="hashmap">
+	<![CDATA[
+		select *
+		from employee e,msg_receive r
+		where e.emp_id = r.emp_id
+		and e.emp_id=#{emp_id}
+	]]>
+	<include refid="search"></include>
+	</select>
+	<select id="selectSearchMsgReceiveListCount" resultType="int" parameterType="hashmap">
+	<![CDATA[
+		select count(*)
+		from employee e,msg_receive r
+		where e.emp_id = r.emp_id
+		and e.emp_id=#{emp_id}
+	]]>
+	<include refid="search"></include>
+	</select>
+	<select id="selectMsgReceiveById" resultType="msgReceive">
+		select *
+		from msg_receive 
+		where msg_no = #{msg_no}
+	</select>
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">
+				AND msg_title like '%'||#{keyword}||'%'
+			</if>
+			<if test="searchType == 'n'.toString()">
+				AND send_name like '%'||#{keyword}||'%'
+			</if>
+			<if test="searchType == 'tn'.toString()">
+				AND(msg_title like '%'||#{keyword}||'%'or
+					send_name like '%'||#{keyword}||'%' )
+			</if>
+		</if>
+	</sql>
+	
+	<update id="insertMsgReceive">
+		insert into msg_receive(
+					MSG_NO,
+					MSG_TITLE,
+					MSG_CONTENT,
+					MSG_FILE_NAME,
+					MSG_VIEW,
+					SEND_ID,
+					SEND_NAME,
+					EMP_ID)
+			values(
+					TO_CHAR(LPAD(receivemsg_seq.nextval,4,0)),
+					#{msg_title},
+					#{msg_content},
+					#{msg_file_name,jdbcType=VARCHAR},
+					#{msg_view},
+					#{send_id},
+					#{send_name},
+					#{emp_id}
+			)
+			
+	</update>
+	<delete id="deleteMsgReceive">
+		delete from msg_receive
+		where msg_no = #{msg_no}
+	</delete>
+	
+	
+</mapper>

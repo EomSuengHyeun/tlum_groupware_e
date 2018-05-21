@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="EmployeeMapper">
+
+	<select id="empLogin" resultType="int">
+		select count(*)
+		from employee
+		where emp_id = #{emp_id}
+		and emp_password = #{emp_password}
+	</select>
+
+	<select id="selectEmployeeList" resultType="employee">
+		<![CDATA[
+		select *   
+		from employee emp,DEPARTMENT dep, GRADE g, EMP_PIC pic, POSITION pos
+        WHERE emp.DEP_NO = dep.DEP_NO
+        and g.GRADE_NO = emp.GRADE_NO
+        and pos.POSITION_NO = emp.POSITION_NO
+        and pic.EMP_ID = emp.EMP_ID
+        ]]>
+		<include refid="search"></include>
+	</select>
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 'i'.toString()">
+				AND emp.emp_id like '%'||#{keyword}||'%'
+			</if>
+			<if test="searchType == 'n'.toString()">
+				AND emp.emp_name like '%'||#{keyword}||'%'
+			</if>
+			
+			<if test="searchType == 'in'.toString()">
+				AND (
+					emp.emp_id like '%'||#{keyword}||'%'
+					or
+					emp.emp_name like '%'||#{keyword}||'%'
+				)
+				
+			</if>
+		</if>
+	</sql>
+	<select id="selectEmployeeListByDepNo" resultType="employee">
+		
+		select *   
+		from employee emp,DEPARTMENT dep, GRADE g, EMP_PIC pic, POSITION pos
+        WHERE emp.DEP_NO = dep.DEP_NO
+        and g.GRADE_NO = emp.GRADE_NO
+        and pos.POSITION_NO = emp.POSITION_NO
+        and pic.EMP_ID = emp.EMP_ID
+        and emp.dep_no=#{dep_no}
+		
+	</select>
+	<select id="selectEmployeeById" resultType="employee">
+	select *   
+		from employee emp,DEPARTMENT dep, GRADE g, EMP_PIC pic, POSITION pos
+        WHERE emp.EMP_ID = #{emp_id}
+        and pic.EMP_ID = emp.EMP_ID
+        and emp.DEP_NO = dep.DEP_NO
+        and g.GRADE_NO = emp.GRADE_NO
+        and pos.POSITION_NO = emp.POSITION_NO
+	
+	</select>
+	<update id="insertEmployee" >
+		insert into employee (
+								EMP_ID,
+								EMP_PASSWORD,
+								EMP_NAME,
+								EMP_ENTRY_DATE,
+								EMP_ADDRESS,
+								EMP_BIRTHDAY,
+								EMP_EMAIL,
+								EMP_PHONE,
+								EMP_CURRENT_STATUS,
+								GRADE_NO,
+								POSITION_NO,
+								DEP_NO
+		)                                                
+		values(
+								#{emp_id},            
+								#{emp_password},      
+								#{emp_name},              
+								#{emp_entry_date},      
+								#{emp_address},       
+								#{emp_birthday},        
+								#{emp_email},         
+								#{emp_phone},         
+								#{emp_current_status},
+								#{grade_no},   
+								#{position_no},
+								#{dep_no}      
+		)
+	</update>
+	
+	<update id="insertEmployeePic">
+	insert into emp_pic(
+						EMP_PIC_NO,
+						EMP_PIC_PATH,
+						EMP_ID
+	)
+	values(#{emp_pic_no},#{emp_pic_path},#{emp_id})
+	
+	</update>
+	<update id="updateEmployee">
+		update employee
+		set 
+			EMP_PASSWORD=#{emp_password},
+			EMP_ADDRESS=#{emp_address},
+			EMP_EMAIL=#{emp_email},
+			EMP_PHONE=#{emp_phone},
+			EMP_CURRENT_STATUS=#{emp_current_status},
+			GRADE_NO=#{grade_no},
+			POSITION_NO=#{position_no},
+			DEP_NO=#{dep_no}
+		where emp_id=#{emp_id}
+	</update>
+	<update id="updateEmployeePic">
+		update emp_pic
+		set emp_pic_no=#{emp_pic_no},
+			emp_pic_path=#{emp_pic_path}
+		where emp_id=#{emp_id}
+	</update>
+	<update id="deleteEmployee">
+		delete from employee
+		where emp_id=#{emp_id}
+	</update>
+	
+
+</mapper>

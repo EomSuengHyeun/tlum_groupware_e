@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CalenderMapper">
+	<update id="insertCalender">
+		INSERT INTO CALENDER(CAL_NO,CAL_TITLE,CAL_CONTENT,CAL_START_TIME,CAL_END_TIME,RABEL_NO)
+		VALUES((SELECT max(greatest(TO_NUMBER(cal_no)))+1 FROM calender),#{cal_title},#{cal_content},#{cal_start_time},#{cal_end_time},#{rabel_no})
+	</update>
+	<update id="modifyCalender" parameterType="calender">
+		UPDATE CALENDER
+		SET 
+		CAL_TITLE =#{cal_title},
+		CAL_CONTENT =#{cal_content},
+		CAL_START_TIME =#{cal_start_time},
+		CAL_END_TIME =#{cal_end_time},
+		RABEL_NO =#{rabel_no}
+		WHERE CAL_NO =#{cal_no}
+	</update>
+	<select id="selectCalender" parameterType="str">
+		SELECT * FROM CALENDER WHERE CAL_NO = #{cal_no}
+	</select>
+	<update id="deleteCalender" parameterType="str">
+		DELETE FROM CALENDER WHERE CAL_NO=#{cal_no}
+	</update>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

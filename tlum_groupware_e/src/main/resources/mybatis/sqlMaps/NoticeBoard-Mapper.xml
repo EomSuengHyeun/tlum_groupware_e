@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="NoticeBoardMapper">
+	<select id="selectNoticeBoardList" resultType="noticeBoard">
+		select *
+		from NOTICE_BOARD
+		order by NOTICE_BOARD_BNO desc
+	</select>
+	
+	<select id="selectNoticeBoardById" resultType="noticeBoard">
+		select *
+		from NOTICE_BOARD
+		where NOTICE_BOARD_BNO=#{notice_board_bno}
+	</select>
+	
+	<update id="updateNoticeBoard">
+		update NOTICE_BOARD
+		set	NOTICE_BOARD_TITLE=#{notice_board_title},
+			NOTICE_BOARD_CONTENT=#{notice_board_content}
+		where NOTICE_BOARD_BNO=#{notice_board_bno}
+	</update>
+		
+	<update id="insertNoticeBoard">
+		insert into NOTICE_BOARD(notice_board_bno,NOTICE_BOARD_TITLE,NOTICE_BOARD_CONTENT)   
+		values (#{notice_board_bno},#{notice_board_title},#{notice_board_content})
+	</update>
+	
+	<update id="deleteNoticeBoard">
+		delete from NOTICE_BOARD
+		where NOTICE_BOARD_BNO=#{notice_board_bno}
+	</update>
+	
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">
+				WHERE NOTICE_BOARD_TITLE like '%'||#{keyword}||'%'
+			</if>
+			<if test="searchType == 'c'.toString()">
+				WHERE NOTICE_BOARD_CONTENT like '%'||#{keyword}||'%'
+			</if>
+			<if test="searchType == 'tc'.toString()">
+				WHERE (
+					NOTICE_BOARD_TITLE like '%'||#{keyword}||'%'
+					or
+					NOTICE_BOARD_CONTENT like '%'||#{keyword}||'%'
+					)
+				
+			</if>
+		</if>
+	</sql>
+	<select id="selectSearchNoticeBoardList" resultType="noticeBoard">
+	<![CDATA[
+		select * 
+		from NOTICE_BOARD
+	]]>
+		<include refid="search"></include>
+		order by NOTICE_BOARD_BNO desc
+	</select>
+	<select id=""></select>
+	
+	<select id="selectSearchNoticeBoardCount" resultType="int">
+	<![CDATA[
+		select count(*) 
+		from NOTICE_BOARD
+	]]>
+		<include refid="search"></include>
+	</select>
+</mapper>

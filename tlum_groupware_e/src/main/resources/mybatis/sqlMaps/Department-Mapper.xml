@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="departmentMapper" >
+	<select id="selectDepartmentList" resultType="department">
+			select *
+			from department
+	</select>
+
+	<select id="selectSearchDepartmentList" resultType="department">
+			select *
+			from department
+		<include refid="search"></include>
+	</select>
+
+	<select id="selectDepartmentCount" resultType="int">
+			select count(*)
+			from department
+		<include refid="search"></include>
+	</select>
+
+	<sql id="search">
+		<if test="searchType != null">
+			where dep_name like '%'||#{keyword}||'%'
+		</if>i
+	</sql>
+	
+	<select id="selectDepartmentById" resultType="department">
+		select *
+		from department
+		where dep_no=#{dep_no}
+	</select>
+	
+	<update id="insertDepartment">
+		insert into department(dep_no,dep_name)
+		values(#{dep_no},#{dep_name})
+	</update>
+
+	<update id="updateDepartment">
+		update department
+		set dep_name=#{dep_name}
+		where dep_no=#{dep_no}
+	</update>
+	
+	<update id="deleteDepartment">
+		delete department
+		where dep_no=#{dep_no}
+	</update>
+
+
+</mapper>

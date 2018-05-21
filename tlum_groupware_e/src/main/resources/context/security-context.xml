@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<http pattern="/resources/**" security="none" />
+	
+	<authentication-manager id="daminAuthManager">
+		<authentication-provider>
+			<user-service>
+				<user name="admin" password="admin" authorities="ROLE_ADMIN"/>
+				
+			</user-service>		
+		</authentication-provider>
+	</authentication-manager>
+	
+	<http pattern="/admin/**" authentication-manager-ref="daminAuthManager" use-expressions="true" >
+		<intercept-url pattern="/index" access="permitAll"/>
+		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
+		<form-login login-page="/admin/login" 
+					username-parameter="uid"
+					password-parameter="upwd"
+					login-processing-url="/adminLoginPost"
+					default-target-url="/admin/index"/>
+		<logout/>
+	</http>
+	
+	
+	<authentication-manager id="memberAuthManager">
+		<authentication-provider>
+			<jdbc-user-service data-source-ref="dataSource"
+				users-by-username-query="select emp_id as username,
+										 emp_password as password,
+										 emp_current_status as enabled
+										 from employee
+										 where emp_id=?"
+			 	authorities-by-username-query="select e.emp_id as username,
+													  g.grade_name as authority
+						                       from grade g, employee e
+										       where emp_id=?
+										       and g.grade_no=e.grade_no"
+				
+			/>
+		</authentication-provider>
+	</authentication-manager>
+	
+	<http pattern="/**" authentication-manager-ref="memberAuthManager" use-expressions="true" >
+		<access-denied-handler error-page="/security/accessDenied"/>
+		<intercept-url pattern="/index" access="permitAll"/>
+		<intercept-url pattern="/**/member/**" access="isAuthenticated()"/>
+		<!-- <intercept-url pattern="/**" access="permitAll"/> -->
+		
+		<form-login
+			login-page="/index"
+			login-processing-url="/empLoginPost"
+			username-parameter="emp_id"
+			password-parameter="emp_password"
+			
+			authentication-success-handler-ref="loginSuccessHandler"
+			authentication-failure-handler-ref="loginFailureHandler"
+		/>
+		<logout
+			logout-url="/logout"
+			invalidate-session="true"
+			logout-success-url="/index"
+		/>
+	</http>	
+	
+	<beans:bean id="loginSuccessHandler"
+	            class="com.tlum.security.LoginSuccessHandler"
+	            p:defaultTargetUrl="/member/main/main"
+	            />
+	<beans:bean id="loginFailureHandler"
+				class="com.tlum.security.LoginFailureHandler"
+				p:defaultFailureUrl="/index"
+				p:useForward="true"
+				/>
+</beans:beans>
+
+
+
+
+
+
+
+
+

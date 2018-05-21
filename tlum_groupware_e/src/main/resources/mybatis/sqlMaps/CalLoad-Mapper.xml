@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CalLoadMapper">
+	<select id="selectListByID" resultType="calLoad">
+		SELECT c.CAL_NO,c.CAL_TITLE,c.CAL_CONTENT,c.CAL_START_TIME,c.CAL_END_TIME,r.RABEL_NO,r.RABEL_TYPE,r.RABEL_COLOR,r.DEPARTMENT_NO,r.EMP_ID 
+		FROM CALENDER c JOIN RABEL r
+		ON r.RABEL_NO = c.RABEL_NO
+		WHERE r.EMP_ID = #{emp_id}
+	</select>
+	<select id="selectListByRABEL" resultType="calLoad">
+		SELECT c.CAL_NO,c.CAL_TITLE,c.CAL_CONTENT,c.CAL_START_TIME,c.CAL_END_TIME,r.RABEL_NO,r.RABEL_TYPE,r.RABEL_COLOR,r.DEPARTMENT_NO,r.EMP_ID 
+		FROM CALENDER c JOIN RABEL r
+		ON r.RABEL_NO = c.RABEL_NO
+		WHERE r.RABEL_NO = #{RABEL_NO}
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

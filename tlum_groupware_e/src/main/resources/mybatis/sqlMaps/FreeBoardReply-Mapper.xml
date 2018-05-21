@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+    <mapper namespace="FreeBoardReply">
+    	<select id="selectFreeBoardReply" resultType="freeReply">
+    		select * 
+    		from f_board_rep r,employee e
+    		where r.free_board_bno=#{free_board_bno}
+            and r.emp_id = e.emp_id
+    		
+    	</select>
+    	<update id="insertFreeBoardReply">
+    		insert into f_board_rep(reply_no,reply_text,free_board_bno,emp_id)
+    		values(freeboard_reply_seq.NEXTVAL,#{reply_text},#{free_board_bno},#{emp_id})
+    	</update>
+    	
+    	<update id="deleteFreeBoardReply">
+    		delete from f_board_rep
+    		where reply_no=#{reply_no}
+    	
+    	</update>
+    	<select id="countReply" resultType="int">
+    		select count(*) 
+	    		from f_board_rep r,f_board f,employee e
+	    		where f.free_board_bno=#{free_board_bno}
+	    		and r.emp_id = e.emp_id
+    	</select>
+    
+    </mapper>

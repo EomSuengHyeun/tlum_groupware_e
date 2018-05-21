@@ -1,0 +1,12 @@
+
+jdk-7u67-windows-x64 파일설치
+eclipse-jee-kepler-SR2-win32-x86_64압축풀기
+->eclipse 워크스페이스 자기가 배울 폴더로 지정해놓기
+(Eclipse workspace- D:\work\java)
+
+자바 설정해놓기
+=>내컴퓨터 속성->고급시스템설정->고급->환경변수
+->시스템 변수
+
+JAVA_HOME - D:\java\jdk1.7.0_67
+path - D:\java\jdk1.7.0_67\bin

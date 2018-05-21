@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<typeAliases>
+		<typeAlias type="java.lang.String" alias="str"/>
+		<typeAlias type="java.lang.Integer" alias="int"/>
+		<typeAlias type="com.tlum.dto.EmployeeVO" alias="employee" />
+		<typeAlias type="com.tlum.dto.FreeBoardVO" alias="freeBoard"/>
+		<typeAlias type="com.tlum.dto.FreeBoardReplyVO" alias="freeReply"/>
+		<typeAlias type="com.tlum.dto.NoticeBoardVO" alias="noticeBoard"/>
+		<typeAlias type="com.tlum.dto.LimitBoardVO" alias="limitBoard"/>
+		<typeAlias type="com.tlum.dto.LimitBoardReplyVO" alias="limitBoardReply"/>
+		<typeAlias type="com.tlum.dto.MsgReceiveVO" alias="msgReceive"/>
+		<typeAlias type="com.tlum.dto.MsgSendVO" alias="msgSend"/>
+		<typeAlias type="com.tlum.dto.DepartmentVO" alias="department"/>
+		<typeAlias type="com.tlum.dto.RabelVO" alias="rabel" />
+		<typeAlias type="com.tlum.dto.CalLoadDTO" alias="calLoad"/>
+		<typeAlias type="com.tlum.dto.CalenderVO" alias="calender"/>
+		<typeAlias type="com.tlum.dto.AppVO" alias="app"/>
+		
+	</typeAliases>
+
+</configuration>

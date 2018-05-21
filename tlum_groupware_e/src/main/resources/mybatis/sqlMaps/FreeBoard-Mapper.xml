@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="FreeBoardMapper">
+	<select id="selectFreeBoardList" resultType="freeBoard">
+		select * 
+		from f_board f,employee e
+		where e.emp_id = f.emp_id
+	</select>
+	
+	<select id="selectFreeBoardById" resultType="freeBoard">
+		select *
+		from f_board f,employee e
+		where free_board_bno = #{free_board_bno}
+		and e.emp_id = f.emp_id
+	</select>
+	
+	<update id="insertFreeBoard">
+		insert into f_board(
+							free_board_bno,
+							free_board_title,
+							free_board_content,
+							emp_id
+							
+		)
+		values(				#{free_board_bno},
+							#{free_board_title},
+							#{free_board_content},
+							#{emp_id}
+		)
+		
+		
+	</update>
+	
+	<update id="updateFreeBoard">
+		update f_board
+		set free_board_title = #{free_board_title},
+			free_board_content = #{free_board_content}
+		where free_board_bno=#{free_board_bno}
+		and emp_id=#{emp_id}
+	</update>
+	
+	<delete id="deleteFreeBoard">
+		delete from f_board
+		where free_board_bno = #{free_board_bno}
+	</delete>
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">
+				AND free_board_title like '%'||#{keyword}||'%'
+			</if>
+			<if test="searchType == 'c'.toString()">
+				AND free_board_content like '%'||#{keyword}||'%'
+			</if>
+			<if test="searchType == 'e'.toString()">
+				AND emp_name like '%'||#{keyword}||'%'
+			</if>
+			<if test="searchType == 'tce'.toString()">
+				AND (
+					free_board_title like '%'||#{keyword}||'%'
+					or
+					free_board_content like '%'||#{keyword}||'%'
+					or
+					emp_name like '%'||#{keyword}||'%'
+				)
+				
+			</if>
+		</if>
+	</sql>
+	<select id="selectSearchFreeBoardList" resultType="freeBoard">
+	<![CDATA[
+		select * 
+		from f_board f,employee e
+		where e.emp_id = f.emp_id
+	]]>
+		<include refid="search"></include>
+		order by free_board_bno desc
+	</select>
+	<select id="selectSearchFreeBoardCount" resultType="int">
+	<![CDATA[
+		select count(*) 
+		from f_board f,employee e
+		where e.emp_id = f.emp_id
+	]]>
+		<include refid="search"></include>
+		order by free_board_bno desc
+	</select>
+
+</mapper>

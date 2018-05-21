@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<decorators defaultdir="/WEB-INF/decorator">
+	<decorator name="main" page="main_decorator.jsp">
+		<pattern>/member/*</pattern>
+	</decorator>
+	
+
+
+<!-- 	<decorator name="main" page="main_decorator.jsp"> -->
+<!-- 		<pattern>/sboard/*</pattern> -->
+<!-- 	</decorator> -->
+	
+	<decorator name="admin" page="admin_decorator.jsp">
+		<pattern>/admin/*</pattern>
+	</decorator>
+	
+<!-- 	<excludes> -->
+<!-- 		<pattern>/url/log*</pattern> -->
+<!-- 	</excludes> -->
+</decorators>

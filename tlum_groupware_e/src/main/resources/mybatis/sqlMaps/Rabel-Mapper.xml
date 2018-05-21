@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="RabelMapper">
+	<update id="insertRabel">
+		INSERT INTO RABEL(RABEL_NO,RABEL_TYPE,RABEL_COLOR,DEPARTMENT_NO,EMP_ID)
+		VALUES((SELECT max(greatest(TO_NUMBER(RABEL_NO)))+1 FROM RABEL),#{rabel_type},#{rabel_color},#{department_no},#{emp_id})
+	</update>
+	<select id="selectRabelByID" resultType="rabel" parameterType="str">
+		SELECT * FROM RABEL WHERE EMP_ID=#{emp_id}
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+

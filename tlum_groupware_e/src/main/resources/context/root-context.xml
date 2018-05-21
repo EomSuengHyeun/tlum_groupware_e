@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:p="http://www.springframework.org/schema/p"
+   xmlns:c="http://www.springframework.org/schema/c"
+   xmlns:context="http://www.springframework.org/schema/context"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+   
+   <!-- Root Context: defines shared resources visible to all other web components -->
+   <context:property-placeholder location="classpath:properties/oracle.properties" />
+   
+   <bean id="dataSource"
+         class="org.apache.commons.dbcp2.BasicDataSource"
+         p:driverClassName="${jdbc.driverClassName}"
+         p:url="${jdbc.url}"
+         p:username="${jdbc.username}"
+         p:password="${jdbc.password}"
+         />
+   <bean id="sqlSessionFactory"
+        class="org.mybatis.spring.SqlSessionFactoryBean"
+        p:dataSource-ref="dataSource"
+        p:configLocation="classpath:mybatis/sqlConfig/sqlConfig.xml"
+        p:mapperLocations="classpath:mybatis/**/*-Mapper.xml"
+        />
+   <bean id="sqlSession"
+         class="org.mybatis.spring.SqlSessionTemplate"
+         c:sqlSessionFactory-ref="sqlSessionFactory"
+         />
+   <bean id="transactionManager"
+         class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+         p:dataSource-ref="dataSource"
+         />
+         
+         
+   <bean id="employeeDAO"
+         class="com.tlum.dao.EmployeeDAOImpl"
+         p:session-ref="sqlSession"
+         />
+   <bean id="employeeService"
+        class="com.tlum.service.EmployeeServiceImpl"
+        p:employeeDAO-ref="employeeDAO"
+        />
+        
+   <bean id="freeBoardDAO"
+        class="com.tlum.dao.FreeBoardDAOImpl"
+        p:session-ref="sqlSession"/>
+        
+   <bean id="freeBoardService"
+        class="com.tlum.service.FreeBoardServiceImpl"
+        p:freeBoardDAO-ref="freeBoardDAO"/>
+        
+   <bean id="freeBoardReplyDAO"
+        class="com.tlum.dao.FreeBoardReplyDAOImpl"
+        p:namespace="FreeBoardReply"
+        p:session-ref="sqlSession"/>
+        
+   <bean id="freeBoardReplyService"
+        class="com.tlum.service.FreeBoardReplyServiceImpl"
+        p:dao-ref="freeBoardReplyDAO"/>
+        
+   <bean id="msgSendDAO"
+        class="com.tlum.dao.MsgSendDAOImpl"
+        p:session-ref="sqlSession"/>
+        
+   <bean id="msgSendService"
+        class="com.tlum.service.MsgSendServiceImpl"
+        p:msgSendDAO-ref="msgSendDAO"/>
+        
+   <bean id="msgReceiveDAO"
+        class="com.tlum.dao.MsgReceiveDAOImpl"
+        p:session-ref="sqlSession"/>
+        
+   <bean id="msgReceiveService"
+        class="com.tlum.service.MsgReceiveServiceImpl"
+        p:msgReceiveDAO-ref="msgReceiveDAO"/>
+        
+   <bean id="departmentDAO"
+        class="com.tlum.dao.DepartmentDAOImpl"
+        p:session-ref="sqlSession"/>
+        
+   <bean id="departmentService"
+        class="com.tlum.service.DepartmentServiceImpl"
+        p:departmentDAO-ref="departmentDAO"/>
+        
+   <bean id="calenderDAO"
+        class="com.tlum.dao.CalenderDAOImpl"
+        p:session-ref="sqlSession"
+   />
+   <bean id="calenderService"
+        class="com.tlum.service.CalenderServiceImpl"
+        p:calenderDAO-ref="calenderDAO"
+   />   
+   <bean id="rabelDAO"
+        class="com.tlum.dao.RabelDAOImpl"
+        p:session-ref="sqlSession"
+   />
+   <bean id="rabelService"
+        class="com.tlum.service.RabelServiceImpl"
+        p:rabelDAO-ref="rabelDAO"
+   />   
+   <bean id="calLoadDAO"
+        class="com.tlum.dao.CalLoadDAOImpl"
+        p:session-ref="sqlSession"
+   />
+   <bean id="calLoadService"
+        class="com.tlum.service.CalLoadServiceImpl"
+        p:calenderDAO-ref="calLoadDAO"
+   />   
+   
+   <bean id="AppDAO"
+        class="com.tlum.dao.AppDAOImpl"
+        p:session-ref="sqlSession"/>
+        
+   <bean id="AppService"
+        class="com.tlum.service.AppServiceImpl"
+        p:appDAO-ref="AppDAO"/>
+   
+   <bean id="noticeBoardDAO"
+        class="com.tlum.dao.NoticeBoardDAOImpl"
+        p:session-ref="sqlSession"
+        />
+   <bean id="noticeBoardService"
+        class="com.tlum.service.NoticeBoardServiceImpl"
+        p:noticeBoardDAO-ref="noticeBoardDAO"
+        />
+   
+   <bean id="limitBoardDAO"
+        class="com.tlum.dao.LimitBoardDAOImpl"
+        p:session-ref="sqlSession"
+        />
+   <bean id="limitBoardService"
+        class="com.tlum.service.LimitBoardServiceImpl"
+        p:limitBoardDAO-ref="limitBoardDAO"
+        />
+   <bean id="limitBoardReplyDAO"
+        class="com.tlum.dao.LimitBoardReplyDAOImpl"
+        p:namespace="LimitBoardReplyMapper"
+        p:session-ref="sqlSession"
+        />     
+   <bean id="limitBoardReplyService"
+        class="com.tlum.service.LimitBoardReplyServiceImpl"
+        p:limitBoardReplyDAO-ref="limitBoardReplyDAO"
+        />
+            
+   
+   
+   
+</beans>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MsgSendMapper">
+	<select id="selectSearchMsgSendList" resultType="msgSend" parameterType="hashmap">
+	<![CDATA[
+		select *
+		from employee e,msg_send s
+		where e.emp_id = s.emp_id
+		and e.emp_id= #{emp_id}
+	]]>
+	<include refid="search"></include>
+	</select>
+	<select id="selectSearchMsgSendListCount" resultType="int" parameterType="hashmap">
+	<![CDATA[
+		select count(*)
+		from employee e,msg_send s
+		where e.emp_id = s.emp_id
+		and e.emp_id= #{emp_id}
+	]]>
+	<include refid="search"></include>
+	</select>
+	<select id="selectMsgSendById" resultType="msgSend">
+		select *
+		from msg_send 
+		where msg_no = #{msg_no}
+	</select>
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 'i'.toString()">
+				AND msg_title like '%'||#{keyword}||'%'
+			</if>
+			<if test="searchType == 'n'.toString()">
+				AND receive_name like '%'||#{keyword}||'%'
+			</if>
+			<if test="searchType == 'in'.toString()">
+				AND(msg_title like '%'||#{keyword}||'%'or
+					receive_name like '%'||#{keyword}||'%' )
+			</if>
+		</if>
+	</sql>
+	
+	<update id="insertMsgSend">
+		insert into msg_send(
+					MSG_NO,
+					MSG_TITLE,
+					MSG_CONTENT,
+					MSG_FILE_NAME,
+					MSG_VIEW,
+					RECEIVE_ID,
+					RECEIVE_NAME,
+					EMP_ID)
+			values(
+					TO_CHAR(LPAD(sendmsg_seq.nextval,4,0)),
+					#{msg_title},
+					#{msg_content},
+					#{msg_file_name,jdbcType=VARCHAR},
+					#{msg_view},
+					#{receive_id},
+					#{receive_name},
+					#{emp_id}
+			)
+			
+	</update>
+	<delete id="deleteMsgSend">
+		delete from msg_send
+		where msg_no = #{msg_no}
+	</delete>
+	
+	
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="LimitBoardReplyMapper">
+	<select id="selectLimitBoardReplyList" resultType="limitBoardReply">
+		select *
+		from L_BOARD_REP r,EMPLOYEE e
+		where LIMIT_BOARD_BNO=#{limit_board_bno}
+		and r.emp_id = e.emp_id
+	</select>
+	
+	<update id="insertLimitBoardReply">
+		insert into L_BOARD_REP(REPLY_NO,REPLY_TEXT,LIMIT_BOARD_BNO,EMP_ID)
+		values(TO_CHAR(LPAD(LIMITBOARD_REPLY_SEQ.NEXTVAL,4,0)),#{reply_text},#{limit_board_bno},#{emp_id})
+	</update>
+	
+	<update id="deleteLimitBoardReply">
+		delete from L_BOARD_REP
+		where REPLY_NO=#{reply_no}
+	</update>
+	<select id="selectSearchLimitBoardReplyCount" resultType="int">
+    	select count(*) 
+	   		from L_BOARD_REP R,L_BOARD L,EMPLOYEE E
+	   		where L.LIMIT_BOARD_BNO=#{limit_board_bno}
+	   		and L.EMP_ID = E.EMP_ID
+    </select>
+	
+	
+	
+	
+	
+	
+</mapper>
